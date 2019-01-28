@@ -114,6 +114,7 @@
 				<Item Name="WDT Append Waveforms I64.vi" Type="VI" URL="/&lt;vilib&gt;/Waveform/WDTOps.llb/WDT Append Waveforms I64.vi"/>
 				<Item Name="whitespace.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/whitespace.ctl"/>
 			</Item>
+			<Item Name="handle name deletion.vi" Type="VI" URL="../handle name deletion.vi"/>
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
 			<Item Name="sum waveform.vi" Type="VI" URL="../sum waveform.vi"/>
 			<Item Name="Waveform Creation.vi" Type="VI" URL="../Waveform Creation.vi"/>
