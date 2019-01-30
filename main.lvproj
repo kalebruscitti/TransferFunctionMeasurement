@@ -21,6 +21,8 @@
 			<Item Name="Tektronix AWG 5000 7000 Series.bin3" Type="Document" URL="/&lt;instrlib&gt;/Tektronix AWG 5000 7000 Series/Examples/Tektronix AWG 5000 7000 Series.bin3"/>
 		</Item>
 		<Item Name="configure_awg.vi" Type="VI" URL="../configure_awg.vi"/>
+		<Item Name="initialize_devices.vi" Type="VI" URL="../initialize_devices.vi"/>
+		<Item Name="main.vi" Type="VI" URL="../main.vi"/>
 		<Item Name="measure frequency response.vi" Type="VI" URL="../measure frequency response.vi"/>
 		<Item Name="read_lia.vi" Type="VI" URL="../read_lia.vi"/>
 		<Item Name="Send_single_wave.vi" Type="VI" URL="../Send_single_wave.vi"/>
