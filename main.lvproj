@@ -20,11 +20,13 @@
 			<Item Name="Tektronix AWG 5000 7000 Series Modify an Existing Waveform.vi" Type="VI" URL="/&lt;instrlib&gt;/Tektronix AWG 5000 7000 Series/Examples/Tektronix AWG 5000 7000 Series Modify an Existing Waveform.vi"/>
 			<Item Name="Tektronix AWG 5000 7000 Series.bin3" Type="Document" URL="/&lt;instrlib&gt;/Tektronix AWG 5000 7000 Series/Examples/Tektronix AWG 5000 7000 Series.bin3"/>
 		</Item>
-		<Item Name="main.vi" Type="VI" URL="../main.vi"/>
+		<Item Name="configure_awg.vi" Type="VI" URL="../configure_awg.vi"/>
+		<Item Name="read_lia.vi" Type="VI" URL="../read_lia.vi"/>
 		<Item Name="Send_single_wave.vi" Type="VI" URL="../Send_single_wave.vi"/>
 		<Item Name="Send_sum_wave.vi" Type="VI" URL="../Send_sum_wave.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="instr.lib" Type="Folder">
+				<Item Name="Stanford Research SR865.lvlib" Type="Library" URL="/&lt;instrlib&gt;/Stanford Research SR865/Stanford Research SR865.lvlib"/>
 				<Item Name="Tektronix AWG 5000 7000 Series.lvlib" Type="Library" URL="/&lt;instrlib&gt;/Tektronix AWG 5000 7000 Series/Tektronix AWG 5000 7000 Series.lvlib"/>
 			</Item>
 			<Item Name="vi.lib" Type="Folder">
@@ -92,7 +94,6 @@
 				<Item Name="Longest Line Length in Pixels.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Longest Line Length in Pixels.vi"/>
 				<Item Name="LVBoundsTypeDef.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/miscctls.llb/LVBoundsTypeDef.ctl"/>
 				<Item Name="LVRectTypeDef.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/miscctls.llb/LVRectTypeDef.ctl"/>
-				<Item Name="Merge Errors.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Merge Errors.vi"/>
 				<Item Name="NI_AALBase.lvlib" Type="Library" URL="/&lt;vilib&gt;/Analysis/NI_AALBase.lvlib"/>
 				<Item Name="NI_MABase.lvlib" Type="Library" URL="/&lt;vilib&gt;/measure/NI_MABase.lvlib"/>
 				<Item Name="Not Found Dialog.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Not Found Dialog.vi"/>
