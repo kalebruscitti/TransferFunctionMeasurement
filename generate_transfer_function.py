@@ -46,20 +46,12 @@ def af(f):
 def pf(f):
     return 0
 
-def TransferFunction(f, load, ampf=af, phif=pf):
-    if load:
-        amplitude = ampf(f)
-        phase = phif(f)
-        return amplitude, phase
-    else:
-        amplitude = ampf(f)
-        phase = phif(f)
-        return amplitude, phase
-    
-# ------------------ Nothing below this point needs to be changed ------------------
+def TransferFunction(f, ampf=af, phif=pf):
+    amplitude = ampf(f)
+    phase = phif(f)
+    return amplitude, phase
 
-
-def compute_data(highest_frequency, lowest_frequency, frequency_step_size, load, ampf=af,phif=pf):
+def compute_data(highest_frequency, lowest_frequency, frequency_step_size, ampf=af,phif=pf):
     steps = (highest_frequency - lowest_frequency)/frequency_step_size + 1 # add one to get a point at the last freq
     freq_range = np.linspace(lowest_frequency, highest_frequency, int(steps))
 
@@ -69,7 +61,7 @@ def compute_data(highest_frequency, lowest_frequency, frequency_step_size, load,
     p_list = []
     # fill arrays
     for f in freq_range:
-        item = TransferFunction(f, load, ampf, phif)
+        item = TransferFunction(f, ampf, phif)
         item = np.reshape(np.asarray(item), (1,2)) # format as [amp, phase] 
         data = np.append(data, item,axis=0)
 
