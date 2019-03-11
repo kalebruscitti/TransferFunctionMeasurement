@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import filedialog as fd
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-from numpy import linspace, pi
+from numpy import linspace, pi, amax
 mpl.use("TkAgg")
 from generate_transfer_function import TransferFunction, compute_data, invert, savetocsv, load_from_file
 
@@ -18,7 +18,7 @@ class mainGUI:
         self.file_bool = tk.Checkbutton(master, text="Load from File", variable = self.load_file)
         self.file_bool.grid(column=1)
         
-        self.greet_button = tk.Button(master, text="File", command=self.getfile)
+        self.greet_button = tk.Button(master, text="Input File", command=self.getfile)
         self.greet_button.grid(column=1)
 
         self.lb1 = tk.StringVar()
@@ -42,6 +42,9 @@ class mainGUI:
         self.output_file.grid(column=2,pady=5)
         self.output_file.insert(0, "Output Path")
 
+        self.set_output = tk.Button(master, text="Output File", command=self.setfile)
+        self.set_output.grid(column=1,row=7, sticky='E')
+
         # Inputs for Amp/Phase functions
         self.amp_l = tk.Label(master, text="A(f) = ")
         self.amp_l.grid(column=2,row=1,sticky='E')
@@ -58,6 +61,10 @@ class mainGUI:
         # Compute button
         self.go_button = tk.Button(master, text="Compute", command=self.compute)
         self.go_button.grid(column=2)
+        
+        self.inv = tk.IntVar()
+        self.do_invert = tk.Checkbutton(master, text="Invert Function", variable = self.inv)
+        self.do_invert.grid(column=3)
 
         # Graphs
         fig = plt.Figure(figsize=(8,3))
@@ -65,12 +72,12 @@ class mainGUI:
 
         self.ax1 = fig.add_subplot(1,2,1)
         self.ax2 = fig.add_subplot(1,2,2)
-        self.ax1.set_title("Inverse Amplitude Function")
+        self.ax1.set_title("Amplitude Function")
         self.ax1.set_xlabel("Frequency (Hz)")
         self.ax1.set_ylabel("Amplitude (relative voltage)")
-        self.ax2.set_title("Inverse Phase Function")
+        self.ax2.set_title("Phase Function")
         self.ax2.set_xlabel("Frequency (Hz)")
-        self.ax2.set_ylabel("Phase (radians)")
+        self.ax2.set_ylabel("Phase (deg)")
         self.canvas = mpl.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=self.master)
         self.canvas.draw()
         self.canvas.get_tk_widget().grid(column=1, columnspan=3, pady=5)
@@ -83,29 +90,32 @@ class mainGUI:
     def phase_function(self,f):
         string = self.phi_in.get()
         phi = eval(string)
-        phi = phi%(2*pi)
+        phi = 360*(phi%(2*pi))/(2*pi)
         return phi
         
     def getfile(self):
         self.path = fd.askopenfilename()
         self.lb1.set(self.path)
 
+    def setfile(self):
+        self.file = fd.askopenfilename()
+        self.output_file.delete(0, 'end')
+        self.output_file.insert(0, self.file)
+
     def makegraph(self, data):
         steps = int((self.end_freq - self.start_freq)/self.step_size + 1)
         freq_range = linspace(self.start_freq, self.end_freq, steps)
         self.ax1.clear()
         self.ax2.clear()
+        self.ax1.set_title("Amplitude Function")
+        self.ax1.set_xlabel("Frequency (Hz)")
+        self.ax1.set_ylabel("Amplitude (relative voltage)")
+        self.ax2.set_title("Phase Function")
+        self.ax2.set_xlabel("Frequency (Hz)")
+        self.ax2.set_ylabel("Phase (degrees)")
         self.ax1.plot(freq_range, data[:,0],label="Inverse Amplitude")
         self.ax2.plot(freq_range, data[:,1],label="Inverse Phase")
-
         self.canvas.draw()
-        self.toolbar.update()
-
-
-    def a1(self,f):
-        return 1
-    def p0(self,f):
-        return 0
 
     def compute(self):
         try:
@@ -139,7 +149,12 @@ class mainGUI:
             self.ampf, self.phif = load_from_file(self.path)
             
         data = compute_data(self.end_freq, self.start_freq, self.step_size, self.ampf, self.phif)
-        data = invert(data)
+
+        inv_bool = self.inv.get()
+        if inv_bool:
+            data = invert(data)
+        else:
+            data[:,0] = data[:,0]/amax(data[:,0])
      
             
         try:

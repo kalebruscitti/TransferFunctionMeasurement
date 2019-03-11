@@ -35,8 +35,8 @@ def TransferFunction(f):
 '''
 def load_from_file(path):
     data = pd.read_csv(path, header=None, names=["Frequency (Hz)","Amplitude (V)", "Phase (deg)"])
-    ampf = interp1d(data.iloc[:,0].values[:15], data.iloc[:,1].values[:15], kind='quadratic', bounds_error=False, fill_value=1)
-    phif = interp1d(data.iloc[:,0].values[:15], np.zeros(15), kind='quadratic', bounds_error=False, fill_value=1)
+    ampf = interp1d(data.iloc[:,0].values[:], data.iloc[:,1].values[:], kind='quadratic', bounds_error=False, fill_value=1)
+    phif = interp1d(data.iloc[:,0].values[:], data.iloc[:,2].values[:], kind='quadratic', bounds_error=False, fill_value=1)
     return ampf, phif
 
 
