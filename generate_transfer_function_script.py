@@ -22,44 +22,29 @@ frequency_step_size = 122950*20
 # It is best to set this to the cantilever resonance frequency so that your frequency points match the frequencies that the AWG will sample.
 
 filename = 'fun_xfer.csv'
-verbose = False # set to True to see details, False to run faster
+verbose = True # set to True to see details, False to run faster
 load_from_file = False # set to True if loading xfer function from a file.
 
-'''
 def TransferFunction(f):
     data = pd.read_csv("data/awg_hand_measurements.csv", header=None, names=["Frequency (Hz)","Amplitude (V)", "Phase (deg)"])
     ampf = interp1d(data.iloc[:,0].values[:15], data.iloc[:,1].values[:15], kind='quadratic', bounds_error=False, fill_value=1)
     amplitude = ampf(f)  # Put the Amplitude Transfer Function here
     phase = f/(10*mega) # Put the Phase Transfer Function here
     return amplitude, phase
-'''
-def load_from_file(path):
-    data = pd.read_csv(path, header=None, names=["Frequency (Hz)","Amplitude (V)", "Phase (deg)"])
+
+if load_from_file:
+    data = pd.read_csv("data/awg_hand_measurements.csv", header=None, names=["Frequency (Hz)","Amplitude (V)", "Phase (deg)"])
     ampf = interp1d(data.iloc[:,0].values[:15], data.iloc[:,1].values[:15], kind='quadratic', bounds_error=False, fill_value=1)
     phif = interp1d(data.iloc[:,0].values[:15], np.zeros(15), kind='quadratic', bounds_error=False, fill_value=1)
-    return ampf, phif
-
-
-def af(f):
-    return 1
-
-def pf(f):
-    return 0
-
-def TransferFunction(f, load, ampf=af, phif=pf):
-    if load:
-        amplitude = ampf(f)
-        phase = phif(f)
-        return amplitude, phase
-    else:
+    def TransferFunction(f):
         amplitude = ampf(f)
         phase = phif(f)
         return amplitude, phase
     
+    
 # ------------------ Nothing below this point needs to be changed ------------------
 
-
-def compute_data(highest_frequency, lowest_frequency, frequency_step_size, load, ampf=af,phif=pf):
+def compute_data(highest_frequency, lowest_frequency, frequency_step_size):
     steps = (highest_frequency - lowest_frequency)/frequency_step_size + 1 # add one to get a point at the last freq
     freq_range = np.linspace(lowest_frequency, highest_frequency, int(steps))
 
@@ -69,17 +54,20 @@ def compute_data(highest_frequency, lowest_frequency, frequency_step_size, load,
     p_list = []
     # fill arrays
     for f in freq_range:
-        item = TransferFunction(f, load, ampf, phif)
+        item = TransferFunction(f)
         item = np.reshape(np.asarray(item), (1,2)) # format as [amp, phase] 
         data = np.append(data, item,axis=0)
 
     return data
 
+data = compute_data()
 
 def invert(data):
     data[:,0] = 1/(data[:,0]/np.amin(data[:,0]))
     data[:,1] = -1*data[:,1]
-    return data
+    return data()
+
+data = invert(data)
 
 # graphing
 if verbose:
@@ -90,8 +78,8 @@ if verbose:
     plt.title("Phase")
     plt.show()
 
-def savetocsv(filename,data):
-    np.savetxt(filename, data, delimiter=',') # save as csv
-    print("File saved as " + filename)
+
+np.savetxt(filename, data, delimiter=',') # save as csv
+print("File saved as " + filename)
 
 
